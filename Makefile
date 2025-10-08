@@ -22,7 +22,7 @@ install:
 
 	@echo install playwright
 	pip install playwright
-	playwright install chromium --with-deps --no-shell
+	playwright install chromium --no-shell
 
 	@echo install dependencies
 	poetry install
@@ -38,7 +38,7 @@ install-requirements:
 
 	@echo install playwright
 	pip install playwright
-	playwright install chromium --with-deps --no-shell
+	playwright install chromium --no-shell
 
 	@echo install dependencies
 	pip install -r requirements.txt
