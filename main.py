@@ -52,7 +52,7 @@ async def main():
     logger.visualize_agent_tree(agent)
 
     # Run example
-    task = "Use deep_researcher_agent to search the latest papers on the topic of 'AI Agent' and then summarize it."
+    task = "As of 2024-04-15, who is the current head of state of Indonesia?" #"Use deep_researcher_agent to search the latest papers on the topic of 'AI Agent' and then summarize it."
     res = await agent.run(task)
     logger.info(f"| Result: {res}")
 

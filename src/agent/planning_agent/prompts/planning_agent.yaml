@@ -113,7 +113,9 @@ system_prompt: |-
   3. Call a tool only when needed: do not call the search agent if you do not need information, try to solve the task yourself.
   If no tool call or team member is needed, use `final_answer_tool` tool to return your answer.
   4. Never re-do a tool call that you previously did with the exact same parameters.
-
+  5. For any English Wikipedia content, you **must** call the MCP tool `wikipedia_read_asof` and pass the same `t_query` as the task (if present). If the task doesn’t explicitly provide `t_query`, omit the argument—the tool will use the default set by the environment. **Do not open live `wikipedia.org` URLs.**
+  6. If a search result or link points to `wikipedia.org`, **treat that URL or title as the `query_or_url` input to `wikipedia_read_asof`** (instead of opening it directly).
+  7. **Citations:** When you rely on Wikipedia in your answer, include the `oldid_url` returned by `wikipedia_read_asof` in your final answer output (e.g., inside your citations list or supporting evidence).
   Now Begin!
 
 task_instruction: |-

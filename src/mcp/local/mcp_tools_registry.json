@@ -1,5 +1,23 @@
 [
   {
+    "name": "wikipedia_read_asof",
+    "description": "Fetch English Wikipedia content as of a cutoff date using OldidEnforcer. Returns cleaned text + citation {oldid_url, rev_time}.",
+    "function": null,
+    "metadata": {
+      "name": "wikipedia_read_asof",
+      "description": "Fetches a Wikipedia page at oldid ≤ t_query and returns plain text plus citation metadata.",
+      "requires": "os, requests, urllib.parse, re, html, bs4",
+      "args": [
+        "title_or_url (str): Page title like 'Barack Obama' or a https://en.wikipedia.org/wiki/... URL.",
+        "t_query (str): ISO date like '2024-04-15' (optional; defaults to env T_QUERY)."
+      ],
+      "returns": [
+        "result (dict): {'text': str, 'citation': {'url': str, 'rev_time': str, 'title': str}}"
+      ]
+    },
+    "script_content": "```python\nimport os, requests, urllib.parse, re, html\nfrom bs4 import BeautifulSoup\n\n# MCP Name: wikipedia_read_asof\n# Description: Time-lock Wikipedia reads via OldidEnforcer and return plain text + citation.\n# Requires: os, requests, urllib.parse, re, html, bs4\n\nOLDID_HOST = os.getenv('OLDID_HOST', 'http://localhost:8008')\nDEFAULT_TQ = os.getenv('T_QUERY', '2024-04-15')\n\ndef _title_from(url_or_title: str) -> str:\n    if url_or_title.startswith('http'):\n        m = re.search(r\"/wiki/([^?#]+)\", url_or_title)\n        if not m:\n            return url_or_title\n        return urllib.parse.unquote(m.group(1)).replace('_', ' ')\n    return url_or_title\n\ndef wikipedia_read_asof(title_or_url: str, t_query: str = None):\n    tq = t_query or DEFAULT_TQ\n    title = _title_from(title_or_url)\n\n    # Resolve oldid ≤ t_query using your OldidEnforcer\n    r = requests.get(f\"{OLDID_HOST}/wiki/oldid_before\", params={\"title\": title, \"t_query\": tq}, timeout=20)\n    r.raise_for_status()\n    info = r.json()  # expects {'oldid_url': ..., 'rev_time': ...}\n\n    # Fetch that exact revision (HTML is fine; we’ll strip it)\n    html_page = requests.get(info['oldid_url'], timeout=30).text\n\n    # Minimal HTML → text: drop references, navboxes, infoboxes; keep paragraphs\n    soup = BeautifulSoup(html_page, 'html.parser')\n    for sel in ['sup.reference', 'span.mw-editsection', 'table.infobox', 'table.navbox', 'table.metadata', 'div.hatnote']:\n        for node in soup.select(sel):\n            node.decompose()\n    text = '\\n'.join(p.get_text(' ', strip=True) for p in soup.select('p'))\n    text = html.unescape(text).strip()\n\n    return {\n        'text': text,\n        'citation': {\n            'url': info['oldid_url'],\n            'rev_time': info['rev_time'],\n            'title': title\n        }\n    }\n```"
+  },  
+  {
     "name": "extract_colored_numbers_from_image",
     "description": "Identifies and extracts numbers from an image, categorizing them by color (e.g., red, green).",
     "function": null,
