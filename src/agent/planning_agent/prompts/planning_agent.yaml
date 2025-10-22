@@ -115,9 +115,9 @@ system_prompt: |-
   4. Never re-do a tool call that you previously did with the exact same parameters.
   5. When the task includes an as-of date or t_query, delegate to `browser_use_agent` expecting it to use `wikipedia_read_asof`.
   For other tasks, delegate to `browser_use_agent` expecting it to use `auto_browser_use_tool`.
+  7. **Citations:** When you rely on Wikipedia in your answer, include the `oldid_url` returned by `wikipedia_read_asof` in your final answer output (e.g., inside your citations list or supporting evidence).
   Now Begin!
-#7. **Citations:** When you rely on Wikipedia in your answer, include the `oldid_url` returned by `wikipedia_read_asof` in your final answer output (e.g., inside your citations list or supporting evidence).
-
+  
 task_instruction: |-
   You have one question to answer. It is paramount that you provide a correct answer. Give it all you can: I know for a fact that you have access to all the relevant tools and team members to solve it and find the correct answer (the answer does exist). 
   Failure or 'I cannot answer' or 'None found' will not be tolerated, success will be rewarded. 

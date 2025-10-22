@@ -8,4 +8,5 @@ from .tools import (
     AutoBrowserUseTool,
     PlanningTool,
     make_tool_instance,
+    WikipediaAsOfTool
 )

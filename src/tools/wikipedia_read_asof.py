@@ -1,8 +1,7 @@
+# src/tools/wikipedia_asof_tool.py
 import os
-import re
 import json
-from datetime import datetime, timezone
-from typing import Optional, Tuple
+import re
 from urllib.parse import urlparse, parse_qs, unquote
 
 import httpx
@@ -10,151 +9,152 @@ import httpx
 from src.tools import AsyncTool, ToolResult
 from src.registry import TOOL
 
-# ---- Config / defaults -------------------------------------------------------
-OLDID_ENFORCER_BASE = os.getenv("OLDID_ENFORCER_BASE", "http://127.0.0.1:8008")
 WIKI_API = "https://en.wikipedia.org/w/api.php"
 
-UA = os.getenv(
-    "WIKI_USER_AGENT",
-    "PATQA-OldidEnforcer/0.1 (academic research; YOUR_EMAIL@university.edu)",
-)
+def _default_user_agent() -> str:
+    # Good UA format per Wikimedia policy; override via env if you want.
+    # Example: PATQA-OldidClient/0.1 (academic research; you@uni.edu)
+    return os.getenv(
+        "WIKI_USER_AGENT",
+        "PATQA-OldidClient/0.1 (academic research; YOUR_EMAIL@university.edu)"
+    )
 
-MAX_EXTRACT_CHARS = int(os.getenv("WIKI_EXTRACT_MAX_CHARS", "6000"))  # trim huge pages
+def _oldid_enforcer_base() -> str:
+    # Where your FastAPI OldidEnforcer is running
+    return os.getenv("OLDID_ENFORCER_BASE", "http://127.0.0.1:8008")
 
-
-def _isoify_to_eod(s: str) -> str:
-    """Ensure YYYY-MM-DD -> YYYY-MM-DDT23:59:59Z; pass through full ISO with Z/+."""
-    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", s):
-        return s + "T23:59:59Z"
-    if s.endswith("Z") or "+" in s:
-        return s
-    return s + "Z"
-
-
-def _title_from_query_or_url(q: str) -> str:
+def _extract_title_or_oldid(query_or_url: str):
     """
-    Accepts a page title OR a full enwiki URL and returns canonical title.
-    Handles:
-      - https://en.wikipedia.org/wiki/Title_With_Underscores
-      - https://en.wikipedia.org/w/index.php?title=Foo&oldid=123
-      - plain "Foo bar"
+    Accepts a page title OR a full enwiki URL.
+    Returns a tuple: (title: str|None, oldid: int|None)
     """
-    # If it looks like a URL to enwiki, parse out the title
-    try:
-        pu = urlparse(q)
-        if pu.netloc.endswith("wikipedia.org"):
-            if pu.path.startswith("/wiki/"):
-                title = unquote(pu.path.split("/wiki/", 1)[1])
-                return title.replace("_", " ")
-            # /w/index.php?title=...
-            qs = parse_qs(pu.query)
-            if "title" in qs and len(qs["title"]) > 0:
-                return qs["title"][0].replace("_", " ")
-    except Exception:
-        pass
-    # Otherwise treat as a title string
-    return q.strip()
+    if re.match(r"^https?://", query_or_url):
+        u = urlparse(query_or_url)
+        qs = parse_qs(u.query or "")
+        # Try oldid in query first
+        if "oldid" in qs and qs["oldid"]:
+            try:
+                return None, int(qs["oldid"][0])
+            except ValueError:
+                pass
+        # Else pull title from /wiki/Title path
+        if "/wiki/" in u.path:
+            raw = u.path.split("/wiki/", 1)[1]
+            return unquote(raw.replace("_", " ")), None
+        # Or from ?title=... query
+        if "title" in qs and qs["title"]:
+            return unquote(qs["title"][0]).replace("_", " "), None
+        # Fallback: nothing parseable
+        return None, None
+    else:
+        # Looks like a plain title
+        return query_or_url.strip(), None
 
-
-async def _oldid_before(client: httpx.AsyncClient, title: str, t_query: str) -> Tuple[int, str, str]:
-    """Call your OldidEnforcer to resolve the revision at/before t_query."""
-    params = {"title": title, "t_query": t_query}
-    r = await client.get(f"{OLDID_ENFORCER_BASE}/wiki/oldid_before", params=params, timeout=30.0)
-    if r.status_code == 403:
-        raise RuntimeError("OldidEnforcer: 403 Forbidden (set a descriptive User-Agent).")
-    if r.status_code == 404:
-        # Bubble up a friendly message with the service's detail (if present)
+async def _resolve_oldid_with_enforcer(title: str, t_query: str, ua: str) -> dict:
+    """
+    Call OldidEnforcer to get {title, rev_id, rev_time, oldid_url}
+    """
+    base = _oldid_enforcer_base()
+    url = f"{base}/wiki/oldid_before"
+    async with httpx.AsyncClient(timeout=30.0, headers={"User-Agent": ua, "Accept": "application/json"}) as client:
+        r = await client.get(url, params={"title": title, "t_query": t_query})
+        # Let non-2xx raise so we capture details below
         try:
-            msg = r.json().get("detail") or r.text
-        except Exception:
-            msg = r.text
-        raise RuntimeError(f"OldidEnforcer: {msg}")
-    r.raise_for_status()
-    data = r.json()
-    return int(data["rev_id"]), data["rev_time"], data["oldid_url"]
+            r.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            # Surface OldidEnforcer message if available
+            msg = None
+            try:
+                msg = r.json()
+            except Exception:
+                pass
+            raise RuntimeError(f"OldidEnforcer error {r.status_code}: {msg or r.text}") from e
+        return r.json()
 
-
-async def _fetch_extract_for_oldid(client: httpx.AsyncClient, oldid: int) -> str:
+async def _fetch_html_for_oldid(oldid: int, ua: str) -> dict:
     """
-    Get plaintext extract for a specific oldid.
-    Uses `prop=extracts&explaintext=1` for a clean text block.
+    Use the Wikipedia API to fetch HTML for the given oldid.
+    Returns a dict with { "html": str, "sections": [...]} where sections may be empty.
     """
     params = {
-        "action": "query",
-        "prop": "extracts",
-        "explaintext": 1,
-        "format": "json",
-        "formatversion": 2,
+        "action": "parse",
         "oldid": oldid,
+        "prop": "text|sections",
+        "format": "json",
+        "formatversion": 2
     }
-    r = await client.get(WIKI_API, params=params, timeout=30.0)
-    r.raise_for_status()
-    data = r.json()
-    pages = data.get("query", {}).get("pages", [])
-    if not pages:
-        return ""
-    return pages[0].get("extract", "") or ""
-
+    async with httpx.AsyncClient(timeout=30.0, headers={"User-Agent": ua, "Accept": "application/json"}) as client:
+        r = await client.get(WIKI_API, params=params)
+        r.raise_for_status()
+        data = r.json()
+        if "error" in data:
+            raise RuntimeError(f"Wikipedia API error: {data['error']}")
+        parsed = data.get("parse", {})
+        return {
+            "html": (parsed.get("text") or ""),
+            "sections": (parsed.get("sections") or []),
+            "title": parsed.get("title")
+        }
 
 @TOOL.register_module(name="wikipedia_read_asof", force=True)
 class WikipediaAsOfTool(AsyncTool):
     name = "wikipedia_read_asof"
-    description = "Reads English Wikipedia content *as of* time t using OldidEnforcer (returns text + oldid_url)."
+    description = "Reads English Wikipedia content *as of* time t using OldidEnforcer (no browser)."
     parameters = {
         "type": "object",
         "properties": {
             "query_or_url": {"type": "string", "description": "Page title or a wikipedia URL"},
-            "t_query": {"type": "string", "description": "As-of date (YYYY-MM-DD or full ISO)", "nullable": True},
+            "t_query": {"type":"string", "description":"As-of date/time, e.g. 2024-04-15 (YYYY-MM-DD or ISO8601)", "nullable": True},
         },
-        "required": ["query_or_url"],
+        "required": ["query_or_url"]
     }
     output_type = "any"
 
-    async def forward(self, query_or_url: str, t_query: Optional[str] = None) -> ToolResult:
+    def __init__(self,
+                 model_id: str = "langchain-Qwen", # "gpt-4.1",
+                 ):
+
+        super(WikipediaAsOfTool, self).__init__()
+        self.ua = _default_user_agent()
+
+    async def forward(self, query_or_url: str, t_query: str = None) -> ToolResult:
         """
-        1) Normalize the title from title/URL
-        2) Resolve oldid at/before t_query via OldidEnforcer
-        3) Fetch plaintext for that oldid from enwiki API
-        4) Return a compact JSON string with title, oldid_url, rev info, and extract (possibly truncated)
+        - If query_or_url contains oldid=..., fetch that exact revision (t_query ignored).
+        - Else, resolve the oldid for (title, t_query) via OldidEnforcer, then fetch HTML.
+        Returns JSON as a string in ToolResult.output.
         """
         try:
-            # Normalize inputs
-            title = _title_from_query_or_url(query_or_url)
-            if not title:
-                return ToolResult(output=None, error="Empty title after parsing query_or_url.")
+            title, oldid = _extract_title_or_oldid(query_or_url)
 
-            # Default t_query = current UTC date end-of-day (latest as-of now)
-            if not t_query:
-                t_query = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-            t_query_iso = _isoify_to_eod(t_query)
+            # If we already have an oldid from the URL, just fetch it.
+            oldid_meta = None
+            if oldid is None:
+                if not title:
+                    return ToolResult(output=None, error="Could not parse a title or oldid from query_or_url.")
+                if not t_query:
+                    # If you really want to allow 'latest', you could call action=parse&page=title here,
+                    # but this tool is meant to be *as of* a time. Be explicit:
+                    return ToolResult(output=None, error="t_query is required when no oldid is provided.")
+                oldid_meta = await _resolve_oldid_with_enforcer(title, t_query, self.ua)
+                oldid = int(oldid_meta["rev_id"])
 
-            headers = {"User-Agent": UA, "Accept": "application/json"}
+            html_pkg = await _fetch_html_for_oldid(oldid, self.ua)
 
-            async with httpx.AsyncClient(headers=headers) as client:
-                rev_id, rev_time, oldid_url = await _oldid_before(client, title, t_query_iso)
-                extract = await _fetch_extract_for_oldid(client, rev_id)
-
-            truncated = False
-            if len(extract) > MAX_EXTRACT_CHARS:
-                extract = extract[:MAX_EXTRACT_CHARS].rstrip() + "\n… [truncated]"
-                truncated = True
-
-            payload = {
-                "source": "enwiki",
-                "title": title,
-                "as_of": t_query,
-                "rev_id": rev_id,
-                "rev_time": rev_time,
-                "oldid_url": oldid_url,
-                "extract": extract,
-                "extract_truncated": truncated,
-                "extract_chars": len(extract),
+            result = {
+                "input": {"query_or_url": query_or_url, "t_query": t_query},
+                "resolved": {
+                    "title": html_pkg.get("title") or (oldid_meta.get("title") if oldid_meta else title),
+                    "rev_id": oldid,
+                    "rev_time": (oldid_meta.get("rev_time") if oldid_meta else None),
+                    "oldid_url": (oldid_meta.get("oldid_url") if oldid_meta else f"https://en.wikipedia.org/w/index.php?oldid={oldid}")
+                },
+                "content": {
+                    "html": html_pkg["html"],
+                    "sections": html_pkg["sections"],
+                }
             }
+            return ToolResult(output=json.dumps(result), error=None)
 
-            # Return JSON string so the agent can easily parse/cite oldid_url
-            return ToolResult(output=json.dumps(payload, ensure_ascii=False), error=None)
-
-        except httpx.HTTPError as e:
-            return ToolResult(output=None, error=f"HTTP error: {str(e)}")
         except Exception as e:
-            return ToolResult(output=None, error=str(e))
+            # Bubble a concise error for the agent
+            return ToolResult(output=None, error=f"wikipedia_asof_tool error: {e}")

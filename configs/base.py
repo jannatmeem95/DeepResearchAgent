@@ -28,10 +28,10 @@ auto_browser_use_tool_config  = dict(
     model_id="langchain-Qwen"
 )
 
-# wikipedia_read_asof_config  = dict(
-#     type="wikipedia_read_asof",
-#     model_id="Qwen"
-# )
+wikipedia_read_asof_config  = dict(
+    type="wikipedia_read_asof",
+    model_id="Qwen"
+)
 
 deep_analyzer_tool_config  = dict(
     type="deep_analyzer_tool",

@@ -8,7 +8,7 @@ from src.tools.image_generator import ImageGeneratorTool
 from src.tools.video_generator import VideoGeneratorTool
 from src.tools.file_reader import FileReaderTool
 from src.tools.oai_deep_research import OAIDeepResearchTool
-
+from src.tools.wikipedia_read_asof import WikipediaAsOfTool
 
 __all__ = [
     "Tool",
@@ -23,5 +23,6 @@ __all__ = [
     "VideoGeneratorTool",
     "make_tool_instance",
     "FileReaderTool",
-    "OAIDeepResearchTool"
+    "OAIDeepResearchTool",
+    "WikipediaAsOfTool",
 ]

@@ -40,7 +40,7 @@ browser_use_agent_config = dict(
     max_steps = 5,
     template_path = "src/agent/browser_use_agent/prompts/browser_use_agent.yaml",
     provide_run_summary = True,
-    tools = ["auto_browser_use_tool", "python_interpreter_tool"],
+    tools = ["auto_browser_use_tool", "wikipedia_read_asof", "python_interpreter_tool"],
 )
 
 planning_agent_config = dict(
