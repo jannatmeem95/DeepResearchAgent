@@ -113,13 +113,50 @@ system_prompt: |-
   3. Call a tool only when needed: do not call the search agent if you do not need information, try to solve the task yourself.
   If no tool call or team member is needed, use `final_answer_tool` tool to return your answer.
   4. Never re-do a tool call that you previously did with the exact same parameters.
-  5. For any English Wikipedia content, you **must** call the MCP tool `wikipedia_read_asof` and pass the same `t_query` as the task (if present). If the task doesn’t explicitly provide `t_query`, omit the argument—the tool will use the default set by the environment. **Do not open live `wikipedia.org` URLs.**
-  6. If a search result or link points to `wikipedia.org`, **treat that URL or title as the `query_or_url` input to `wikipedia_read_asof`** (instead of opening it directly).
-  7. **Citations:** When you rely on Wikipedia in your answer, include the `oldid_url` returned by `wikipedia_read_asof` in your final answer output (e.g., inside your citations list or supporting evidence).
+  6. When you use Wikipedia, include the returned oldid_url(s) in the final answer.
+  If the task doesn’t explicitly provide `t_query`, omit the argument—the tool will use the default set by the environment. **Do not open live `wikipedia.org` URLs.**
+  8 . **Citations:** When you rely on Wikipedia in your answer, include the `oldid_url` returned by `wikipedia_read_asof` in your final answer output (e.g., inside your citations list or supporting evidence).
   Now Begin!
+# 5. For any English Wikipedia content, call `wikipedia_read_asof` with the task’s t_query if present. Never open live wikipedia.org URLs.
+#7. If a search result or link points to `wikipedia.org`, **treat that URL or title as the `query_or_url` input to `wikipedia_read_asof`** (instead of opening it directly).
+# R0. ROUTING:
+# • If the task contains an explicit as-of date (pattern: YYYY-MM-DD) OR “as of …” OR provides t_query,
+#   you MUST use `wikipedia_read_asof` for ALL evidence and pass the same t_query.
+#   Do NOT call `auto_browser_use_tool` for these tasks.
+# • Otherwise, prefer `auto_browser_use_tool` to search the web.
+# Example A (As-of):
+# Task: "As of 2015-09-05, who is the head coach of the team Cristiano Ronaldo plays for?"
+# Action:
+# {
+#   "name": "wikipedia_read_asof",
+#   "arguments": {"query_or_url": "Cristiano Ronaldo", "t_query": "2015-09-05"}
+# }
+# Observation: "... club=Real Madrid ..."
+
+# Action:
+# {
+#   "name": "wikipedia_read_asof",
+#   "arguments": {"query_or_url": "Real Madrid CF", "t_query": "2015-09-05"}
+# }
+# Observation: "... Head coach: Rafael Benítez ..."
+# Action:
+# {"name":"final_answer_tool","arguments":{"answer":"Rafael Benítez", "citations":[oldid_urls...]}}
+
+# Example B (Generic):
+# Task: "List three recent reviews of the Pixel 9 camera."
+# Action:
+# {
+#   "name": "auto_browser_use_tool",
+#   "arguments": {"task": "Find three recent credible reviews of the Pixel 9 camera"}
+# }
+# Observation: "... links and excerpts ..."
+# Action:
+# {"name":"final_answer_tool","arguments":{"answer":"...", "sources":["..."]}}
+
+  
 
 task_instruction: |-
-  You can search for the most relevant web pages and interact with them to accurately find answers to tasks.
+  You can search for the most relevant web pages from `wikipedia.org` and interact with them to accurately find answers to tasks.
   * Please use `auto_browser_use_tool` tool to search the web and interact with them to find the answer. When you require to use it, please provide the original task as the `task` parameter for the tool. DO NOT modify the task.
     - When you need to extract the content from the web page, do not ignore the content in the web screen shot.
   * You can also use the `python_interpreter_tool` tool to run any code to support your analysis.

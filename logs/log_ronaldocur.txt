@@ -1,0 +1,484 @@
+INFO     [telemetry] Anonymized telemetry enabled. See https://docs.browser-use.com/development/telemetry for more information.
+PlanningAgent | Qwen
+└── 🛠️ Tools:
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Name                  ┃ Description                                              ┃ Arguments ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ planning_tool         │ A planning tool that allows the agent to create and      │           │
+    │                       │ manage plans for solving complex tasks. The tool         │           │
+    │                       │ provides functionality for creating plans, updating plan │           │
+    │                       │ steps, and tracking progress.                            │           │
+    │                       │ NOTE:                                                    │           │
+    │                       │ - You must base your plan on the available tools and     │           │
+    │                       │ team members, and explicitly use them in your steps.     │           │
+    │                       │ - You must solve the complex task in ≤ 5 steps.          │           │
+    │                       │ - `create`: Create a new plan must include a unique      │           │
+    │                       │ plan_id.                                                 │           │
+    │                       │                                                          │           │
+    │ deep_analyzer_agent   │ A deep analyzer agent that can perform systematic,       │           │
+    │                       │ step-by-step analysis.                                   │           │
+    │ browser_use_agent     │ A browser use agent that can search relevant web pages   │           │
+    │                       │ and interact with them.                                  │           │
+    │ deep_researcher_agent │ A deep researcher agent that can conduct extensive web   │           │
+    │                       │ searches.                                                │           │
+    │ final_answer_tool     │ Provides a final answer to the given problem.            │           │
+    └───────────────────────┴──────────────────────────────────────────────────────────┴───────────┘
+╭──────────────────────────────────── New run - planning_agent ────────────────────────────────────╮
+│                                                                                                  │
+│ You have one question to answer. It is paramount that you provide a correct answer. Give it all  │
+│ you can: I know for a fact that you have access to all the relevant tools and team members to    │
+│ solve it and find the correct answer (the answer does exist).                                    │
+│ Failure or 'I cannot answer' or 'None found' will not be tolerated, success will be rewarded.    │
+│ * You must begin by creating a detailed plan that explicitly incorporates the available TOOLS    │
+│ and TEAM MEMBERS. Then, follow the plan step by step to solve the complex task.                  │
+│ * If the task involves analyzing an ATTACHED FILE, a URL, performing CALCULATIONS, or playing    │
+│ GAME, please use `deep_analyzer_agent`.                                                          │
+│ * If the task involves attached files, you are required to specify the absolute path in your     │
+│ plan and share it explicitly with your team members.                                             │
+│ * If the task need to use the team members, you are required to provide the ORIGINAL TASK as the │
+│ `task` parameter for the agents to understand the task. DO NOT modify the task.                  │
+│ * If the task involves interacting with web pages or conducting web searches, start with the     │
+│ `browser_use_agent` and follow up with the `deep_researcher_agent`.                              │
+│     - Firstly, please use `browser_use_agent` to search and interact with the most relevant web  │
+│ pages to find the answer. If the answer is found, please output the answer directly.             │
+│     - Secondly, if the answer is not found, please use `deep_researcher_agent` to perform        │
+│ extensive web searches to find the answer.                                                       │
+│ * Run verification steps if that's needed, you must make sure you find the correct answer!       │
+│                                                                                                  │
+│ Here is the task:                                                                                │
+│ As of 2015-04-15, Which team did Cristiano Ronaldo play for before joining the current team?     │
+│                                                                                                  │
+╰─ OpenAIServerModel - Qwen ───────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-19dc74127b984b96b9c11ab5a21673c6', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-9783207008144ffabbae8a6de04b4c31
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."]}',   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071256, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=85, prompt_tokens=2787,            
+total_tokens=2872, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.']}                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-32e2f63b823143709ad354af1379a10c', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-c718f0c479414d72a40260ffb729166d
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071257, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=88, prompt_tokens=2998,            
+total_tokens=3086, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 3 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-17ad82bafb86476392e73a0d9aecfdf6', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-7cfcdf7ec3c346bba979707b42a6913f
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071259, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=88, prompt_tokens=3245,            
+total_tokens=3333, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 4 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-7acf0daa63244b91bc5f71dbba777e8d', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-18e259a69ff74e0d9d04b56c70176130
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071261, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=87, prompt_tokens=3491,            
+total_tokens=3578, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 5 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-a8a7f7c6052b473ea9e3bd01e72332fa', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-a8cec243fe1b4161ab054337e009b62b
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071262, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=87, prompt_tokens=3740,            
+total_tokens=3827, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 6 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-4501f43511cb49e5b5c91457a079d138', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-deab308a715d425087571345e990fb63
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071264, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=3985,           
+total_tokens=4088, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 7 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-450ab2a32561417a90e379579096a928', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-5ac260bf871d491188ceee8a47178bd9
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071266, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=88, prompt_tokens=4231,            
+total_tokens=4319, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 8 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-aaaa79fd8194457598ce703dc4923a91', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-2a70d29e93f04946b1f530538f759063
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071267, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=4476,           
+total_tokens=4579, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 9 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-7a0ec476b4a0487fa761869e3003f6df', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-be6d59a2d9db4d67990d6dc23f5311f6
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071269, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=4726,           
+total_tokens=4829, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 10 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-7562bb3d430c46d4a5504e78a3ed1b8a', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-19a4c65c5aed47d5b4e85639dd510a7d
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."]}',   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071271, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=85, prompt_tokens=4972,            
+total_tokens=5057, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.']}                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 11 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-9b013664ae0a40369eacc5fddf45dd39', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-e3b6f156667d40469f478b3ff2a2d778
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."]}',   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071273, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=85, prompt_tokens=5183,            
+total_tokens=5268, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.']}                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 12 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-dd6e9a8c593448e18558b3eb897f9264', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-ea0e3665edda4617b193f958ffea93c4
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071274, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=88, prompt_tokens=5395,            
+total_tokens=5483, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 13 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-79d7032c11b0437793f7fa1dea3029dd', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-773717d9dda545a3a54bda5eb258178e
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071276, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=5640,           
+total_tokens=5743, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 14 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-93d9f9afbb714fb1a46c147ef14d4ce9', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-e378e73e06414877882fd9889a349661
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071278, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=5886,           
+total_tokens=5989, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 15 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-b0ab6ca58ac346debc7e2c33f97d5ec7', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-bd144ed6302c43b7bea0e76d018b5930
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."]}',   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071280, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=85, prompt_tokens=6134,            
+total_tokens=6219, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.']}                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 16 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-d56541d4736b4e5aa1ddc8eaeebaa48f', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-17fff92314704f93834a707085d5eaf9
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071281, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=88, prompt_tokens=6345,            
+total_tokens=6433, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 17 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-e766a0d33b5f4e7ea8856a1ea4f34408', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-26e78ce7f0f347d1b59352c3d32ba473
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071283, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=6592,           
+total_tokens=6695, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 18 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-1f65275be74b480b8a52bc9076dea1ca', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-4df24700339e4ae59999c63c625f5ef9
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071285, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=6840,           
+total_tokens=6943, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 19 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-d8b4e3d0ccb3425eade1915d57965c9f', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-44b76b4907704e7bb7c61cf71f60839c
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071287, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=7087,           
+total_tokens=7190, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 20 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-262d7858696c40e6be3ad655de95e6f3', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-3b7b0ec73f844d7787f7506c145363d2
+', function=Function(arguments='{"action": "create", "title": "Cristiano Ronaldo Previous Team",    
+"steps": ["Use browser_use_agent to search for Cristiano Ronaldo\'s career history.", "Analyze the  
+information using deep_analyzer_agent to determine his previous team before the current one."],     
+"step_notes": "Ensure to track the progress and update the plan as necessary."}',                   
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761071289, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=103, prompt_tokens=7335,           
+total_tokens=7438, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Cristiano Ronaldo   │
+│ Previous Team', 'steps': ["Use browser_use_agent to search for Cristiano Ronaldo's career        │
+│ history.", 'Analyze the information using deep_analyzer_agent to determine his previous team     │
+│ before the current one.'], 'step_notes': 'Ensure to track the progress and update the plan as    │
+│ necessary.'}                                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+Shutting down http.server...

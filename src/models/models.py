@@ -438,6 +438,10 @@ class ModelManager(metaclass=Singleton):
                 "model_name": "langchain-o3",
                 "model_id": "o3",
             },
+            {
+                "model_name": "langchain-Qwen", 
+                "model_id": "Qwen"
+            },
         ]
 
         if use_local_proxy:
@@ -471,12 +475,23 @@ class ModelManager(metaclass=Singleton):
                 model_name = model["model_name"]
                 model_id = model["model_id"]
 
-                model = ChatOpenAI(
-                    model=model_id,
-                    api_key=api_key,
-                    base_url=api_base,
-                )
-                self.registed_models[model_name] = model
+                if model_id == "Qwen":
+                # 👇 points LangChain to your vLLM server
+                    qwen_api_key = os.getenv("QWEN_API_KEY", "dummy")
+                    qwen_api_base = os.getenv("QWEN_API_BASE")  # e.g. http://127.0.0.1:8000/v1
+                    self.registed_models[model_name] = ChatOpenAI(
+                        model="qwen2.5-7b",      # any string; vLLM ignores it if only one model is served
+                        api_key=qwen_api_key,
+                        base_url=qwen_api_base,
+                    )
+
+                else:
+                    model = ChatOpenAI(
+                        model=model_id,
+                        api_key=api_key,
+                        base_url=api_base,
+                    )
+                    self.registed_models[model_name] = model
     def _register_vllm_models(self, use_local_proxy: bool = False):
         # qwen
         api_key = self._check_local_api_key(local_api_key_name="QWEN_API_KEY", 

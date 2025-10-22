@@ -113,15 +113,15 @@ system_prompt: |-
   3. Call a tool only when needed: do not call the search agent if you do not need information, try to solve the task yourself.
   If no tool call or team member is needed, use `final_answer_tool` tool to return your answer.
   4. Never re-do a tool call that you previously did with the exact same parameters.
-  5. For any English Wikipedia content, you **must** call the MCP tool `wikipedia_read_asof` and pass the same `t_query` as the task (if present). If the task doesn’t explicitly provide `t_query`, omit the argument—the tool will use the default set by the environment. **Do not open live `wikipedia.org` URLs.**
-  6. If a search result or link points to `wikipedia.org`, **treat that URL or title as the `query_or_url` input to `wikipedia_read_asof`** (instead of opening it directly).
-  7. **Citations:** When you rely on Wikipedia in your answer, include the `oldid_url` returned by `wikipedia_read_asof` in your final answer output (e.g., inside your citations list or supporting evidence).
+  5. When the task includes an as-of date or t_query, delegate to `browser_use_agent` expecting it to use `wikipedia_read_asof`.
+  For other tasks, delegate to `browser_use_agent` expecting it to use `auto_browser_use_tool`.
   Now Begin!
+#7. **Citations:** When you rely on Wikipedia in your answer, include the `oldid_url` returned by `wikipedia_read_asof` in your final answer output (e.g., inside your citations list or supporting evidence).
 
 task_instruction: |-
   You have one question to answer. It is paramount that you provide a correct answer. Give it all you can: I know for a fact that you have access to all the relevant tools and team members to solve it and find the correct answer (the answer does exist). 
   Failure or 'I cannot answer' or 'None found' will not be tolerated, success will be rewarded. 
-  * You must begin by creating a detailed plan that explicitly incorporates the available TOOLS and TEAM MEMBERS. Then, follow the plan step by step to solve the complex task.
+  * You must begin by creating a detailed plan which MUST include a unique "plan_id" that explicitly incorporates the available TOOLS and TEAM MEMBERS. Then, follow the plan step by step to solve the complex task.
   * If the task involves analyzing an ATTACHED FILE, a URL, performing CALCULATIONS, or playing GAME, please use `deep_analyzer_agent`.
   * If the task involves attached files, you are required to specify the absolute path in your plan and share it explicitly with your team members.
   * If the task need to use the team members, you are required to provide the ORIGINAL TASK as the `task` parameter for the agents to understand the task. DO NOT modify the task.

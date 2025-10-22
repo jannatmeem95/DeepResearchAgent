@@ -52,9 +52,9 @@ async def main():
     logger.visualize_agent_tree(agent)
 
     # Run example
-    task = "As of 2024-04-15, who is the current head of state of Indonesia?" #"Use deep_researcher_agent to search the latest papers on the topic of 'AI Agent' and then summarize it."
+    task = "which team does Cristiano Ronaldo play for currently?" #"who is the current head coach of the team Cristiano Ronaldo plays for currently? Give me citations of the resources you extracted the context to answer the question from. " #"Which team does Cristiano Ronaldo play for currently?" #  #"Call the MCP tool `wikipedia_read_asof` to search the answer for question: As of 2015-04-15, Who is the current head coach of the team Cristiano Ronaldo plays for currently?" 
     res = await agent.run(task)
     logger.info(f"| Result: {res}")
-
+#As of 2015-11-04, 
 if __name__ == '__main__':
     asyncio.run(main())

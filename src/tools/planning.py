@@ -4,12 +4,13 @@ from typing_extensions import Literal
 from src.registry import TOOL
 from src.tools import AsyncTool, ToolResult
 from src.logger import logger
+from uuid import uuid4
 
 _PLANNING_TOOL_DESCRIPTION = """A planning tool that allows the agent to create and manage plans for solving complex tasks. The tool provides functionality for creating plans, updating plan steps, and tracking progress.
 NOTE:
 - You must base your plan on the available tools and team members, and explicitly use them in your steps.
 - You must solve the complex task in ≤ 5 steps.
-- `create`: Create a new plan must include a unique plan_id.
+- `create`: You must create a new plan must include a unique `plan_id`.
 """
 
 @TOOL.register_module(name="planning_tool", force=True)
@@ -94,7 +95,9 @@ class PlanningTool(AsyncTool):
         """Create a new plan with the given ID, title, and steps."""
         if not plan_id:
             res = "Parameter `plan_id` is required for action: create"
+            plan_id = f"plan_{uuid4().hex[:6]}"
             logger.error(res)
+            res = "Parameter `plan_id` is created"
             return ToolResult(
                 output=None,
                 error=res,

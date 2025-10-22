@@ -1,0 +1,1025 @@
+INFO     [telemetry] Anonymized telemetry enabled. See https://docs.browser-use.com/development/telemetry for more information.
+PlanningAgent | Qwen
+└── 🛠️ Tools:
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Name                  ┃ Description                                              ┃ Arguments ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ planning_tool         │ A planning tool that allows the agent to create and      │           │
+    │                       │ manage plans for solving complex tasks. The tool         │           │
+    │                       │ provides functionality for creating plans, updating plan │           │
+    │                       │ steps, and tracking progress.                            │           │
+    │                       │ NOTE:                                                    │           │
+    │                       │ - You must base your plan on the available tools and     │           │
+    │                       │ team members, and explicitly use them in your steps.     │           │
+    │                       │ - You must solve the complex task in ≤ 5 steps.          │           │
+    │                       │ - `create`: Create a new plan must include a unique      │           │
+    │                       │ plan_id.                                                 │           │
+    │                       │                                                          │           │
+    │ deep_analyzer_agent   │ A deep analyzer agent that can perform systematic,       │           │
+    │                       │ step-by-step analysis.                                   │           │
+    │ browser_use_agent     │ A browser use agent that can search relevant web pages   │           │
+    │                       │ and interact with them.                                  │           │
+    │ deep_researcher_agent │ A deep researcher agent that can conduct extensive web   │           │
+    │                       │ searches.                                                │           │
+    │ final_answer_tool     │ Provides a final answer to the given problem.            │           │
+    └───────────────────────┴──────────────────────────────────────────────────────────┴───────────┘
+╭──────────────────────────────────── New run - planning_agent ────────────────────────────────────╮
+│                                                                                                  │
+│ You have one question to answer. It is paramount that you provide a correct answer. Give it all  │
+│ you can: I know for a fact that you have access to all the relevant tools and team members to    │
+│ solve it and find the correct answer (the answer does exist).                                    │
+│ Failure or 'I cannot answer' or 'None found' will not be tolerated, success will be rewarded.    │
+│ * You must begin by creating a detailed plan that explicitly incorporates the available TOOLS    │
+│ and TEAM MEMBERS. Then, follow the plan step by step to solve the complex task.                  │
+│ * If the task involves analyzing an ATTACHED FILE, a URL, performing CALCULATIONS, or playing    │
+│ GAME, please use `deep_analyzer_agent`.                                                          │
+│ * If the task involves attached files, you are required to specify the absolute path in your     │
+│ plan and share it explicitly with your team members.                                             │
+│ * If the task need to use the team members, you are required to provide the ORIGINAL TASK as the │
+│ `task` parameter for the agents to understand the task. DO NOT modify the task.                  │
+│ * If the task involves interacting with web pages or conducting web searches, start with the     │
+│ `browser_use_agent` and follow up with the `deep_researcher_agent`.                              │
+│     - Firstly, please use `browser_use_agent` to search and interact with the most relevant web  │
+│ pages to find the answer. If the answer is found, please output the answer directly.             │
+│     - Secondly, if the answer is not found, please use `deep_researcher_agent` to perform        │
+│ extensive web searches to find the answer.                                                       │
+│ * Run verification steps if that's needed, you must make sure you find the correct answer!       │
+│                                                                                                  │
+│ Here is the task:                                                                                │
+│ As of 2015-04-15, Who is the current head coach of the team Cristiano Ronaldo plays for          │
+│ currently?                                                                                       │
+│                                                                                                  │
+╰─ OpenAIServerModel - Qwen ───────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-63aa1a4101f14e68bba78f3f77b2abc4', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-c3c47ebe551d454195b6bdcabee63889
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073664, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=125, prompt_tokens=2789,           
+total_tokens=2914, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-ba5dd21e42174becb7ed762abb2ba14d', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-f052b85747e84712a9a766ad9a590479
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"], "step_notes": "Each   
+step will be marked as completed once the corresponding action is taken."}', name='planning_tool'), 
+type='function')], reasoning_content=None), stop_reason=None, token_ids=None)], created=1761073667, 
+model='Qwen', object='chat.completion', service_tier=None, system_fingerprint=None,                 
+usage=CompletionUsage(completion_tokens=128, prompt_tokens=3075, total_tokens=3203,                 
+completion_tokens_details=None, prompt_tokens_details=None), prompt_logprobs=None,                  
+prompt_token_ids=None, kv_transfer_params=None)                                                     
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources'], 'step_notes': 'Each step will be marked as completed once the corresponding action is │
+│ taken.'}                                                                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 3 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-2ad3b771fd7c4ca7b68c1024fd67cd16', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-bf266ea3e07e4d9398173d2e18987c1a
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"], "step_notes": "Each   
+step will be marked as completed once the corresponding action is taken."}', name='planning_tool'), 
+type='function')], reasoning_content=None), stop_reason=None, token_ids=None)], created=1761073669, 
+model='Qwen', object='chat.completion', service_tier=None, system_fingerprint=None,                 
+usage=CompletionUsage(completion_tokens=128, prompt_tokens=3403, total_tokens=3531,                 
+completion_tokens_details=None, prompt_tokens_details=None), prompt_logprobs=None,                  
+prompt_token_ids=None, kv_transfer_params=None)                                                     
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources'], 'step_notes': 'Each step will be marked as completed once the corresponding action is │
+│ taken.'}                                                                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 4 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-7728ed13dd6042778e91298817b801cb', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-2d841a34847a46a1835ccb68b5082c41
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"], "step_notes": "Each   
+step will be marked as completed once the corresponding action is taken."}', name='planning_tool'), 
+type='function')], reasoning_content=None), stop_reason=None, token_ids=None)], created=1761073671, 
+model='Qwen', object='chat.completion', service_tier=None, system_fingerprint=None,                 
+usage=CompletionUsage(completion_tokens=145, prompt_tokens=3731, total_tokens=3876,                 
+completion_tokens_details=None, prompt_tokens_details=None), prompt_logprobs=None,                  
+prompt_token_ids=None, kv_transfer_params=None)                                                     
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources'], 'step_notes': 'Each step will be marked as completed once the corresponding action is │
+│ taken.'}                                                                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 5 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-9dddedce5fa04465b6b8ac3063f33b91', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-c27c54554d0b47ebaba5269e7fb6b7d5
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"], "step_notes": "Each   
+step will be marked as completed once the corresponding action is taken."}', name='planning_tool'), 
+type='function')], reasoning_content=None), stop_reason=None, token_ids=None)], created=1761073674, 
+model='Qwen', object='chat.completion', service_tier=None, system_fingerprint=None,                 
+usage=CompletionUsage(completion_tokens=145, prompt_tokens=4059, total_tokens=4204,                 
+completion_tokens_details=None, prompt_tokens_details=None), prompt_logprobs=None,                  
+prompt_token_ids=None, kv_transfer_params=None)                                                     
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources'], 'step_notes': 'Each step will be marked as completed once the corresponding action is │
+│ taken.'}                                                                                         │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 6 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-61255f4a1d1243ffa0404dc80b918589', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-92979fbb90334e48922bdb99462323c2
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073677, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=125, prompt_tokens=4384,           
+total_tokens=4509, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 7 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-ed772c191522431484ed00c90affbd09', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-a5856e2f79c04d35b329e37d6301deff
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073679, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=125, prompt_tokens=4672,           
+total_tokens=4797, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 8 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-1783888bc04743aa8ed0aeddd4a0624f', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-ee1efe6cb9f9426493c2f3d10887e3ea
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073681, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=108, prompt_tokens=4960,           
+total_tokens=5068, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 9 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-aef361bb88b04536a06f478b76ac17b4', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-cd6fece09cbf4eba8b49b0d6cdb35a2d
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073683, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=125, prompt_tokens=5246,           
+total_tokens=5371, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 10 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-e576c5d9e58d419589ca0425c84d0882', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-c4e4423889954167aaa7d436636aa93b
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073685, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=125, prompt_tokens=5529,           
+total_tokens=5654, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 11 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-b1005e154fbe468eb3a22629c744434e', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-ca836c648860476aab3211985d4ccff1
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073688, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=108, prompt_tokens=5816,           
+total_tokens=5924, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 12 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-f75ec23c866d423bb9ec8132310e3298', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-4763d4c606494fd4a599a2fdc33f1087
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073690, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=125, prompt_tokens=6101,           
+total_tokens=6226, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 13 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-56ea06b2373848fb893c911b3c887d7f', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-caaa80fdbdc04c20bce3154e4e0c9f15
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073692, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=125, prompt_tokens=6389,           
+total_tokens=6514, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 14 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-bdede34e266d40b49c4b88f0e4bcaa34', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-10f222520eb5415f8791a4efc1f9489e
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Determine the team Cristiano Ronaldo played for as of 
+2015-04-15 using browser_use_agent", "Use deep_researcher_agent to find the current head coach of   
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073694, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=124, prompt_tokens=6673,           
+total_tokens=6797, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Determine the team Cristiano     │
+│ Ronaldo played for as of 2015-04-15 using browser_use_agent', 'Use deep_researcher_agent to find │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 15 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-cebbbb7c2fe04b5babe32cebf1439c2f', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-95092d2689394158a1eeec4b6cb97437
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to determine the team Cristiano 
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073697, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=124, prompt_tokens=6960,           
+total_tokens=7084, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to         │
+│ determine the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to │
+│ find the current head coach of that team', 'Verify the answer by checking recent news or         │
+│ official sources']}                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 16 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-6c8f5c2e1af745c1b87c8bf3043efedf', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-2be21a27fd0a4be88c8a0ee431d91b75
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to determine the team Cristiano 
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073699, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=124, prompt_tokens=7246,           
+total_tokens=7370, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to         │
+│ determine the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to │
+│ find the current head coach of that team', 'Verify the answer by checking recent news or         │
+│ official sources']}                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 17 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-91a1015f38244a1d9c1f5a2154c3920b', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-7b9d325d5d8e4e78a85478aa2c601747
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to determine the team Cristiano 
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073701, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=124, prompt_tokens=7531,           
+total_tokens=7655, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to         │
+│ determine the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to │
+│ find the current head coach of that team', 'Verify the answer by checking recent news or         │
+│ official sources']}                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 18 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-86ddc19588414f54a93407f1ce88be43', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-fab2d4bfd42d445e963022e00e3f1ab6
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to determine the team Cristiano 
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073704, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=107, prompt_tokens=7819,           
+total_tokens=7926, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to         │
+│ determine the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to │
+│ find the current head coach of that team', 'Verify the answer by checking recent news or         │
+│ official sources']}                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 19 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-54bce9f3425541a48e97679d71d30e14', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-eaf3e8f5af3e4ee0bb580f2c9e900ae3
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073706, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=109, prompt_tokens=8103,           
+total_tokens=8212, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 20 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-1bbe9aeb43294cb2a7037b96c4439d42', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-613ef172c40d49ddaf5001ef98ddf398
+', function=Function(arguments='{"action": "create", "title": "Find current head coach of Cristiano 
+Ronaldo\'s team as of 2015-04-15", "steps": ["Use browser_use_agent to search for the team Cristiano
+Ronaldo played for as of 2015-04-15", "Use deep_researcher_agent to find the current head coach of  
+that team", "Verify the answer by checking recent news or official sources"]}',                     
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761073708, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=125, prompt_tokens=8388,           
+total_tokens=8513, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': "Find current head   │
+│ coach of Cristiano Ronaldo's team as of 2015-04-15", 'steps': ['Use browser_use_agent to search  │
+│ for the team Cristiano Ronaldo played for as of 2015-04-15', 'Use deep_researcher_agent to find  │
+│ the current head coach of that team', 'Verify the answer by checking recent news or official     │
+│ sources']}                                                                                       │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+Shutting down http.server...
+INFO     [telemetry] Anonymized telemetry enabled. See https://docs.browser-use.com/development/telemetry for more information.
+PlanningAgent | Qwen
+└── 🛠️ Tools:
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Name                  ┃ Description                                              ┃ Arguments ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ planning_tool         │ A planning tool that allows the agent to create and      │           │
+    │                       │ manage plans for solving complex tasks. The tool         │           │
+    │                       │ provides functionality for creating plans, updating plan │           │
+    │                       │ steps, and tracking progress.                            │           │
+    │                       │ NOTE:                                                    │           │
+    │                       │ - You must base your plan on the available tools and     │           │
+    │                       │ team members, and explicitly use them in your steps.     │           │
+    │                       │ - You must solve the complex task in ≤ 5 steps.          │           │
+    │                       │ - `create`: Create a new plan must include a unique      │           │
+    │                       │ plan_id.                                                 │           │
+    │                       │                                                          │           │
+    │ deep_analyzer_agent   │ A deep analyzer agent that can perform systematic,       │           │
+    │                       │ step-by-step analysis.                                   │           │
+    │ browser_use_agent     │ A browser use agent that can search relevant web pages   │           │
+    │                       │ and interact with them.                                  │           │
+    │ deep_researcher_agent │ A deep researcher agent that can conduct extensive web   │           │
+    │                       │ searches.                                                │           │
+    │ final_answer_tool     │ Provides a final answer to the given problem.            │           │
+    └───────────────────────┴──────────────────────────────────────────────────────────┴───────────┘
+╭──────────────────────────────────── New run - planning_agent ────────────────────────────────────╮
+│                                                                                                  │
+│ You have one question to answer. It is paramount that you provide a correct answer. Give it all  │
+│ you can: I know for a fact that you have access to all the relevant tools and team members to    │
+│ solve it and find the correct answer (the answer does exist).                                    │
+│ Failure or 'I cannot answer' or 'None found' will not be tolerated, success will be rewarded.    │
+│ * You must begin by creating a detailed plan that explicitly incorporates the available TOOLS    │
+│ and TEAM MEMBERS. Then, follow the plan step by step to solve the complex task.                  │
+│ * If the task involves analyzing an ATTACHED FILE, a URL, performing CALCULATIONS, or playing    │
+│ GAME, please use `deep_analyzer_agent`.                                                          │
+│ * If the task involves attached files, you are required to specify the absolute path in your     │
+│ plan and share it explicitly with your team members.                                             │
+│ * If the task need to use the team members, you are required to provide the ORIGINAL TASK as the │
+│ `task` parameter for the agents to understand the task. DO NOT modify the task.                  │
+│ * If the task involves interacting with web pages or conducting web searches, start with the     │
+│ `browser_use_agent` and follow up with the `deep_researcher_agent`.                              │
+│     - Firstly, please use `browser_use_agent` to search and interact with the most relevant web  │
+│ pages to find the answer. If the answer is found, please output the answer directly.             │
+│     - Secondly, if the answer is not found, please use `deep_researcher_agent` to perform        │
+│ extensive web searches to find the answer.                                                       │
+│ * Run verification steps if that's needed, you must make sure you find the correct answer!       │
+│                                                                                                  │
+│ Here is the task:                                                                                │
+│ Who is the current head coach of the team Cristiano Ronaldo plays for currently?                 │
+│                                                                                                  │
+╰─ OpenAIServerModel - Qwen ───────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-f372388f55734412b19bbdd348cadd0a', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-6601bade015e46dbaf91d6930d003d68
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."]}',
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761074186, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=106, prompt_tokens=2775,           
+total_tokens=2881, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.']}                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-eaac1ffbbf734bc4865d71436b32e8f5', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-2fc5ecf725b64889ba6495aa0e03d08b
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Create a plan to find the current team Cristiano Ronaldo   
+plays for.", "Search for Cristiano Ronaldo\'s current team using browser_use_agent.", "Identify the 
+current head coach of the team using browser_use_agent.", "Verify the answer using                  
+deep_researcher_agent if necessary."], "step_notes": "Each step will be marked as completed once the
+corresponding task is accomplished."}', name='planning_tool'), type='function')],                   
+reasoning_content=None), stop_reason=None, token_ids=None)], created=1761074188, model='Qwen',      
+object='chat.completion', service_tier=None, system_fingerprint=None,                               
+usage=CompletionUsage(completion_tokens=114, prompt_tokens=3026, total_tokens=3140,                 
+completion_tokens_details=None, prompt_tokens_details=None), prompt_logprobs=None,                  
+prompt_token_ids=None, kv_transfer_params=None)                                                     
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Create a plan to find the current team    │
+│ Cristiano Ronaldo plays for.', "Search for Cristiano Ronaldo's current team using                │
+│ browser_use_agent.", 'Identify the current head coach of the team using browser_use_agent.',     │
+│ 'Verify the answer using deep_researcher_agent if necessary.'], 'step_notes': 'Each step will be │
+│ marked as completed once the corresponding task is accomplished.'}                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 3 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-75be832f869849da8e6e4ffcd7b1b091', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-c11e4766065c4863a34dbaee2725938f
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074190, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=110,            
+prompt_tokens=3326, total_tokens=3436, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 4 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-5b6cb8e3f06f456fa9f2d05e98d77667', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-ea942af839c7498ebb1c45d3a9185974
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074192, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=126,            
+prompt_tokens=3616, total_tokens=3742, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 5 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-c06995ae3b9942ccbaebbc27c61972be', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-a47a6830a89149ceab0f3c496fa5f61d
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074194, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=110,            
+prompt_tokens=3906, total_tokens=4016, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 6 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-033eb6bf76d8465ea59824fb9b97c2d6', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-3c71420fd1ee4e9bb8260bd76b27ddeb
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074196, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=110,            
+prompt_tokens=4196, total_tokens=4306, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 7 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-bda787197c7f4fe883da9f4459c5c6f6', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-68a18eb37d3445c083ae00446cd9a833
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074198, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=126,            
+prompt_tokens=4484, total_tokens=4610, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 8 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-8e210126be11484bb276a5441b92d15f', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-b23640c805fe4920a31080bcac1f08ab
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074200, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=110,            
+prompt_tokens=4775, total_tokens=4885, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 9 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-56174f1eec574391882b3f85f5b963f0', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-1e04632b183f419d86050b42d027ea83
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074203, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=109,            
+prompt_tokens=5064, total_tokens=5173, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 10 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-3b4e582170c34d819c58f1a842f1b94a', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-f8db9cc144114dc69764e61869d5c633
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074205, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=126,            
+prompt_tokens=5357, total_tokens=5483, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 11 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-1575868fd38e42a98253caab5b5694b4', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-41a53891e45b4dfa9911e5a343eaae37
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Determine the current team Cristiano Ronaldo plays for.",  
+"Find the current head coach of that team using the browser_use_agent.", "Verify the answer using   
+the deep_researcher_agent."]}', name='planning_tool'), type='function')], reasoning_content=None),  
+stop_reason=None, token_ids=None)], created=1761074207, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=94,             
+prompt_tokens=5647, total_tokens=5741, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Determine the current team Cristiano      │
+│ Ronaldo plays for.', 'Find the current head coach of that team using the browser_use_agent.',    │
+│ 'Verify the answer using the deep_researcher_agent.']}                                           │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 12 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-6d37d6a5d4614ff4a6ec2ccaef138ef1', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-f58b2356a4144047abf711c6f5eccfd7
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."]}',
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761074209, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=89, prompt_tokens=5874,            
+total_tokens=5963, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.']}                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 13 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-ea12fca9b287431f87eff431335d14e2', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-a3f8580de7d2497e923724f223743619
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."]}',
+name='planning_tool'), type='function')], reasoning_content=None), stop_reason=None,                
+token_ids=None)], created=1761074210, model='Qwen', object='chat.completion', service_tier=None,    
+system_fingerprint=None, usage=CompletionUsage(completion_tokens=106, prompt_tokens=6123,           
+total_tokens=6229, completion_tokens_details=None, prompt_tokens_details=None),                     
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.']}                                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 14 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-504cb55c1b30400987332777c15cd19d', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-efce46e35d6942359a3b4e07abe48a34
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074212, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=126,            
+prompt_tokens=6375, total_tokens=6501, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 15 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-44aeb716501146d89ff725156c24e67e', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-5f169d054d9f4746b04b01844324005f
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074215, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=109,            
+prompt_tokens=6665, total_tokens=6774, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 16 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-7ea7c055516e4faeb254cb7a4023d455', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-6a52774bad904135889b5b79a4515e22
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074217, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=110,            
+prompt_tokens=6959, total_tokens=7069, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 17 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-65be0007aaed4c509a2e5153b744423d', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-d06ab4956f7b4b02b5a934cea09085d8
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074219, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=109,            
+prompt_tokens=7251, total_tokens=7360, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 18 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-e941d38501de4c7c8e9f0cc36944acf2', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-55c397bcde7246d2b32c85cf7cf614d4
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074221, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=126,            
+prompt_tokens=7541, total_tokens=7667, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 19 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-60c3c138955641c2891949aabae5af02', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-bab5f6dd20ef41b793f5e94bcee56499
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074223, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=109,            
+prompt_tokens=7831, total_tokens=7940, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ Step 20 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Output message of the LLM: ─────────────────────────────────────────────────────────────────────────
+ChatCompletion(id='chatcmpl-8dd0ef2f35c14160a5ec572a8d6d73aa', choices=[Choice(finish_reason='stop',
+index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant',   
+annotations=None, audio=None, function_call=None,                                                   
+tool_calls=[ChatCompletionMessageFunctionToolCall(id='chatcmpl-tool-4791eaef19514a8a845a178f51b27787
+', function=Function(arguments='{"action": "create", "title": "Find Current Head Coach of Team      
+Cristiano Ronaldo Plays For", "steps": ["Use browser_use_agent to search for the current team       
+Cristiano Ronaldo plays for.", "Once the team is identified, use browser_use_agent to find the      
+current head coach of that team.", "Verify the answer using deep_researcher_agent if necessary."],  
+"step_notes": "Each step will be marked as completed once the corresponding task is                 
+accomplished."}', name='planning_tool'), type='function')], reasoning_content=None),                
+stop_reason=None, token_ids=None)], created=1761074225, model='Qwen', object='chat.completion',     
+service_tier=None, system_fingerprint=None, usage=CompletionUsage(completion_tokens=110,            
+prompt_tokens=8119, total_tokens=8229, completion_tokens_details=None, prompt_tokens_details=None), 
+prompt_logprobs=None, prompt_token_ids=None, kv_transfer_params=None)                               
+╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ Calling tool: 'planning_tool' with arguments: {'action': 'create', 'title': 'Find Current Head   │
+│ Coach of Team Cristiano Ronaldo Plays For', 'steps': ['Use browser_use_agent to search for the   │
+│ current team Cristiano Ronaldo plays for.', 'Once the team is identified, use browser_use_agent  │
+│ to find the current head coach of that team.', 'Verify the answer using deep_researcher_agent if │
+│ necessary.'], 'step_notes': 'Each step will be marked as completed once the corresponding task   │
+│ is accomplished.'}                                                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+Shutting down http.server...
+INFO     [telemetry] Anonymized telemetry enabled. See https://docs.browser-use.com/development/telemetry for more information.
